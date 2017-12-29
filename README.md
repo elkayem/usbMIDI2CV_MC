@@ -47,7 +47,8 @@ The settings screen shows the current settings used.  Note priority is listed as
 * Barrel power jack (e.g., 2.1 x 5.5 mm)
 * 9 - 12V DC power supply with barrel connector (e.g., 2.1 x 5.5 mm)
 * PCB (Gerber files included) or strip board
-* 6 10mm M3 bolts and nuts (4 for panel, 2 for USB port)
+* 6x 10mm M3 bolts and nuts (4 for panel, 2 for USB port)
+* 4x M2 bolts and nuts for mounting the OLED screen
 * Panel mount USB 2.0 USB Mini B Female to USB Mini B Male, 1 ft cable (see picture below)
 
 <img src="/images/IMG_1620.JPG" alt="MIDI2CV" width="420" height="315"> 
@@ -61,11 +62,13 @@ Electronic components can be soldered to a strip board or (more conveniently) to
 
 The 3D printer STL files are located in the 3D Printer Files folder. I've also included the Sketchup file, in case modifications are needed.  (Download Sketchup Make, it's free!) The panel includes raised text, and so must be printed with two colors. Most slicers include a "pause at height" plugin, which will move the hot end out of the way and allow you to switch filaments. The panels are 3mm thick, and the letters are 0.45mm thick. I printed with 0.15mm layer thickness, allowing the letters to be printed in three layers. Add the command to pause after you finish printing the 3mm layer, so you can change the filament color. (One tip: If you find that your printer is disabling the stepper motors after pausing, you may need to insert M84 S0 at the start of the G-Code. I did.)  
 
+The 3D printed panel must be printed with supports for the OLED screen mount. There is a recessed area on the back side of the panel that fits the screen mounting shape. I recommend picking up the screen by DIYMall, as the hole pattern was designed for that screen. Others may fit as well. Supports are not required for the case.
+
 I have included 1/4" jacks for the CV note outputs to ensure that the analog synthesizer shares a common ground with the MIDI2CV component.  Ground is carried over the sleeve.  The sleeve pins on the phone jacks need to be tied together, and then tied to a ground location on the PCB.  I did not provide a dedicated ground location on the PCB for this connection, but any location on the PCB will work.  (e.g., directly to the power ground input).  I left the remainder of the outputs as banana jacks assuming at least one of the notes is connected.  If desired, the banana jacks can be replaced with phone jacks.  Be aware that the holes in the 3D printed case may need to be enlarged, and and the case may need to be made taller to accomodate the depth of the additional phone jacks. 
 
 The rotary encoder should have three pins on one side and two on the other.  Connect the three pins to the 3 ENC headers on the board, and the two pins to the 2 BTN pins on the board.  These may be connected using jumper wires and male header pins, or soldered directly to the board.
 
-The OLED attaches to the I2C output on the PCB (marked as 5V, GND, SCL, SDA).  Note the pin order!  This order matches a commonly available OLED from DYImall, but other OLEDs exist with the power and ground swapped.  Swapping power and ground will destroy the OLED.  I do recommend picking up the DYImall version of the 128x64 OLED, as the 3D printed case cutout is desined for that unit.  Other ones may fit as well.
+The OLED attaches to the I2C output on the PCB (marked as 5V, GND, SCL, SDA).  Note the pin order!  This order matches a commonly available OLED from DIYMall, but other OLEDs exist with the power and ground swapped.  Swapping power and ground will destroy the OLED.
 
 The firmware can be uploaded to the Teensy 2.0 using the Teensy loader.  See https://www.pjrc.com/teensy/first_use.html for details.  The hex file is included in this repository.  If modification of the source code is required (e.g., for calibration as described below), then the Arduino software and Teensyduino must also be installed (see https://www.pjrc.com/teensy/td_download.html).  Several libraries are used, which are included as part of the Teensyduino installer.  Be sure to configure the board as Teensy 2.0 (under Tools > Board), and USB Port as MIDI (under Tools > USB Type).
 
