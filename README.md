@@ -47,6 +47,7 @@ The settings screen shows the current settings used.  Note priority is listed as
 * Barrel power jack (e.g., 2.1 x 5.5 mm)
 * 9 - 12V DC power supply with barrel connector (e.g., 2.1 x 5.5 mm)
 * PCB (Gerber files included) or strip board
+* 6 10mm M3 bolts and nuts (4 for panel, 2 for USB port)
 * Panel mount USB 2.0 USB Mini B Female to USB Mini B Male, 1 ft cable (see picture below)
 
 <img src="/images/IMG_1620.JPG" alt="MIDI2CV" width="420" height="315"> 
@@ -66,7 +67,7 @@ The rotary encoder should have three pins on one side and two on the other.  Con
 
 The OLED attaches to the I2C output on the PCB (marked as 5V, GND, SCL, SDA).  Note the pin order!  This order matches a commonly available OLED from DYImall, but other OLEDs exist with the power and ground swapped.  Swapping power and ground will destroy the OLED.  I do recommend picking up the DYImall version of the 128x64 OLED, as the 3D printed case cutout is desined for that unit.  Other ones may fit as well.
 
-The firmware can be uploaded to the Teensy 2.0 using the Teensy loader.  See https://www.pjrc.com/teensy/first_use.html for details.  The hex file is included in this repository.  If modification of the source code is required (e.g., for calibration as described below), then the Arduino software and Teensyduino must also be installed (see https://www.pjrc.com/teensy/td_download.html).  Several libraries are used, which are included as part of the Teensyduino installer.  
+The firmware can be uploaded to the Teensy 2.0 using the Teensy loader.  See https://www.pjrc.com/teensy/first_use.html for details.  The hex file is included in this repository.  If modification of the source code is required (e.g., for calibration as described below), then the Arduino software and Teensyduino must also be installed (see https://www.pjrc.com/teensy/td_download.html).  Several libraries are used, which are included as part of the Teensyduino installer.  Be sure to configure the board as Teensy 2.0 (under Tools > Board), and USB Port as MIDI (under Tools > USB Type).
 
 **Important Note if recompiling firmware:**  In the file Adafruit_SSD1306.h (found either in the folder Arduino\libraries\Adafruit_SSD1306, where "Arduino" is your top level Arduino directory, or in the folder Arduino\hardware\teensy\avr\libraries), uncomment the line #define SSD1306_128_64, and comment out all other displays. If you don't do the above step, the library will assume you are using a 32-pixel display and the displayed text will not fit on the screen.
 
