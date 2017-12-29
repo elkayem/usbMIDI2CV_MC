@@ -2,7 +2,7 @@
 
 ![MIDI2CV](/images/IMG_1630.JPG)
 
-<img src="/images/IMG_1623.JPG" alt="MIDI2CV" width="512" height="384"> <img src="/images/IMG_1631.JPG" alt="MIDI2CV" width="512" height="384">
+<img src="/images/IMG_1623.JPG" alt="MIDI2CV" width="420" height="315"> <img src="/images/IMG_1631.JPG" alt="MIDI2CV" width="420" height="315">
 
 This repository contains the code and schematics for a three-channel USB-MIDI to CV converter.  STL files are also included for a 3D printed case.  This project has the following features:
 * Three channel Note CV output (88 keys, 1V/octave, MIDI channels 1-3) using a 12-bit DAC
@@ -15,16 +15,16 @@ This repository contains the code and schematics for a three-channel USB-MIDI to
 
 This module is the perfect interface between your computer or iPad and an analog synthesizer.  It can independently drive up to three oscillators with 1V/octave CV inputs.  (Connection to an iPad requires the USB camera adapter but is well worth it given the wide variety of great MIDI sequencer apps.)  
 
-<img src="/images/IMG_1639.JPG" alt="MIDI2CV" width="400" height="300"> 
+<img src="/images/IMG_1639.JPG" alt="MIDI2CV" width="420" height="315"> 
 
 Note priority can be independengly set for each channel, with the following options:
 * **Top Note (aka Highest Note):** When multiple notes are sounded simultaneously, the highest note being held will be sounded.  When the highest note is released, the next highest note will be played, and so on.
 * **Bottom Note (aka Lowest Note):** Analagous to top note, except the lowest note being held will be sounded.  
 * **Last Note:** The most recent note played will be sounded.  When that note is released, the next most recent note still being held will be sounded.  
 
-The settings screen shows the current settings used.  Note priority is listed as sequence of three letters showing the setting for each of the three channels, where T = Top Note, B = Bottom Note, and L = Last Note.  Similarly, Gate/Trigger is listed as a sequence of three letters whre G = Gate and T = Trigger.  Pitch Bend and CC settings show which MIDI channel will be used for the analog output.  All of these settings can be set through the OLED interface using the encoder knob.
+The settings screen shows the current settings used.  Note priority is listed as sequence of three letters showing the setting for each of the three channels, where T = Top Note, B = Bottom Note, and L = Last Note.  Similarly, Gate/Trigger is listed as a sequence of three letters where G = Gate and T = Trigger.  Pitch Bend and CC settings show which MIDI channel will be used for the analog output.  All of these settings can be set through the OLED interface using the encoder knob.
 
-<img src="/images/IMG_1627.JPG" alt="MIDI2CV" width="512" height="384"> <img src="/images/IMG_1628.JPG" alt="MIDI2CV" width="512" height="384">
+<img src="/images/IMG_1627.JPG" alt="MIDI2CV" width="420" height="315"> <img src="/images/IMG_1628.JPG" alt="MIDI2CV" width="420" height="315">
 
 ## Parts List
 * Teensy 2.0
@@ -49,20 +49,20 @@ The settings screen shows the current settings used.  Note priority is listed as
 * PCB (Gerber files included) or strip board
 * Panel mount USB 2.0 USB Mini B Female to USB Mini B Male, 1 ft cable (see picture below)
 
-<img src="/images/IMG_1620.JPG" alt="MIDI2CV" width="400" height="300"> 
+<img src="/images/IMG_1620.JPG" alt="MIDI2CV" width="420" height="315"> 
 
 ## Instructions
 Electronic components can be soldered to a strip board or (more conveniently) to the PCB design I have included in this repository.  I recommend using IC sockets to mount the ICs and female headers to mount the Teensy.  The PCB can be manufactured by a PCB supplier.  The least expensive way to do this is to upload the gerber files (included as a .zip file) to one of several Chinese manufacturers such as SchenZhen2U, EasyEDA, or Seeed Studio.  pcbshopper.com allows a comparison between vendors.  Typical prices are $1-$3/board, with a minimum of 5 boards.  Recommended default settings are Layers: 2; PCB Thickness: 1.6mm; Surface Finish: HASL; Copper Weight: 1.  (Alternatively, contact me since I may still have a few extras I could send out for $5 + shipping.)
 
-<img src="/images/IMG_1619.JPG" alt="MIDI2CV" width="512" height="384"> <img src="/images/IMG_1622.JPG" alt="MIDI2CV" width="512" height="384">
+<img src="/images/IMG_1619.JPG" alt="MIDI2CV" width="420" height="315"> <img src="/images/IMG_1622.JPG" alt="MIDI2CV" width="420" height="315">
 
-**Important!** Before connecting the Teensy 2.0 to an external power supply, the 5V pads must be cut on the bottmo side of the board.  See https://www.pjrc.com/teensy/external_power.html for details.
+**Important!** Before connecting the Teensy 2.0 to an external power supply, the 5V pads must be cut on the bottom side of the board.  See https://www.pjrc.com/teensy/external_power.html for details.
 
 The 3D printer STL files are located in the 3D Printer Files folder. I've also included the Sketchup file, in case modifications are needed.  (Download Sketchup Make, it's free!) The panel includes raised text, and so must be printed with two colors. Most slicers include a "pause at height" plugin, which will move the hot end out of the way and allow you to switch filaments. The panels are 3mm thick, and the letters are 0.45mm thick. I printed with 0.15mm layer thickness, allowing the letters to be printed in three layers. Add the command to pause after you finish printing the 3mm layer, so you can change the filament color. (One tip: If you find that your printer is disabling the stepper motors after pausing, you may need to insert M84 S0 at the start of the G-Code. I did.)  
 
 I have included 1/4" jacks for the CV note outputs to ensure that the analog synthesizer shares a common ground with the MIDI2CV component.  Ground is carried over the sleeve.  The sleeve pins on the phone jacks need to be tied together, and then tied to a ground location on the PCB.  I did not provide a dedicated ground location on the PCB for this connection, but any location on the PCB will work.  (e.g., directly to the power ground input).  I left the remainder of the outputs as banana jacks assuming at least one of the notes is connected.  If desired, the banana jacks can be replaced with phone jacks.  Be aware that the holes in the 3D printed case may need to be enlarged, and and the case may need to be made taller to accomodate the depth of the additional phone jacks. 
 
-The rotary encoder should have three pins on one side and two on the other.  Connect the three pins to the 3 ENC headers on the board, and the two pins to the 2 BTN pins on the board.  These may be connected using jumper wires and male header pins, or soldered directly to toe board.
+The rotary encoder should have three pins on one side and two on the other.  Connect the three pins to the 3 ENC headers on the board, and the two pins to the 2 BTN pins on the board.  These may be connected using jumper wires and male header pins, or soldered directly to the board.
 
 The OLED attaches to the I2C output on the PCB (marked as 5V, GND, SCL, SDA).  Note the pin order!  This order matches a commonly available OLED from DYImall, but other OLEDs exist with the power and ground swapped.  Swapping power and ground will destroy the OLED.  I do recommend picking up the DYImall version of the 128x64 OLED, as the 3D printed case cutout is desined for that unit.  Other ones may fit as well.
 
