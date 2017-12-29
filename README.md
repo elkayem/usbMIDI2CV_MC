@@ -2,7 +2,7 @@
 
 ![MIDI2CV](/images/IMG_1630.JPG)
 
-<img src="/images/IMG_1623.jpg" alt="Clock" width="512" height="384"> <img src="/images/IMG_1631.JPG" alt="Clock" width="512" height="384">
+<img src="/images/IMG_1623.JPG" alt="MIDI2CV" width="512" height="384"> <img src="/images/IMG_1631.JPG" alt="MIDI2CV" width="512" height="384">
 
 This repository contains the code and schematics for a three-channel USB-MIDI to CV converter.  STL files are also included for a 3D printed case.  This project has the following features:
 * Three channel Note CV output (88 keys, 1V/octave, MIDI channels 1-3) using a 12-bit DAC
@@ -15,7 +15,7 @@ This repository contains the code and schematics for a three-channel USB-MIDI to
 
 This module is the perfect interface between your computer or iPad and an analog synthesizer.  It can independently drive up to three oscillators with 1V/octave CV inputs.  (Connection to an iPad requires the USB camera adapter but is well worth it given the wide variety of great MIDI sequencer apps.)  
 
-<img src="/images/IMG_1639.jpg" alt="Clock" width="400" height="300"> 
+<img src="/images/IMG_1639.JPG" alt="MIDI2CV" width="400" height="300"> 
 
 Note priority can be independengly set for each channel, with the following options:
 * **Top Note (aka Highest Note):** When multiple notes are sounded simultaneously, the highest note being held will be sounded.  When the highest note is released, the next highest note will be played, and so on.
@@ -24,7 +24,7 @@ Note priority can be independengly set for each channel, with the following opti
 
 The settings screen shows the current settings used.  Note priority is listed as sequence of three letters showing the setting for each of the three channels, where T = Top Note, B = Bottom Note, and L = Last Note.  Similarly, Gate/Trigger is listed as a sequence of three letters whre G = Gate and T = Trigger.  Pitch Bend and CC settings show which MIDI channel will be used for the analog output.  All of these settings can be set through the OLED interface using the encoder knob.
 
-<img src="/images/IMG_1627.jpg" alt="Clock" width="512" height="384"> <img src="/images/IMG_1628.JPG" alt="Clock" width="512" height="384">
+<img src="/images/IMG_1627.JPG" alt="MIDI2CV" width="512" height="384"> <img src="/images/IMG_1628.JPG" alt="MIDI2CV" width="512" height="384">
 
 ## Parts List
 * Teensy 2.0
@@ -49,12 +49,12 @@ The settings screen shows the current settings used.  Note priority is listed as
 * PCB (Gerber files included) or strip board
 * Panel mount USB 2.0 USB Mini B Female to USB Mini B Male, 1 ft cable (see picture below)
 
-<img src="/images/IMG_1620.jpg" alt="Clock" width="400" height="300"> 
+<img src="/images/IMG_1620.JPG" alt="MIDI2CV" width="400" height="300"> 
 
 ## Instructions
 Electronic components can be soldered to a strip board or (more conveniently) to the PCB design I have included in this repository.  I recommend using IC sockets to mount the ICs and female headers to mount the Teensy.  The PCB can be manufactured by a PCB supplier.  The least expensive way to do this is to upload the gerber files (included as a .zip file) to one of several Chinese manufacturers such as SchenZhen2U, EasyEDA, or Seeed Studio.  pcbshopper.com allows a comparison between vendors.  Typical prices are $1-$3/board, with a minimum of 5 boards.  Recommended default settings are Layers: 2; PCB Thickness: 1.6mm; Surface Finish: HASL; Copper Weight: 1.  (Alternatively, contact me since I may still have a few extras I could send out for $5 + shipping.)
 
-<img src="/images/IMG_1619.jpg" alt="Clock" width="512" height="384"> <img src="/images/IMG_1622.JPG" alt="Clock" width="512" height="384">
+<img src="/images/IMG_1619.JPG" alt="MIDI2CV" width="512" height="384"> <img src="/images/IMG_1622.JPG" alt="MIDI2CV" width="512" height="384">
 
 **Important!** Before connecting the Teensy 2.0 to an external power supply, the 5V pads must be cut on the bottmo side of the board.  See https://www.pjrc.com/teensy/external_power.html for details.
 
