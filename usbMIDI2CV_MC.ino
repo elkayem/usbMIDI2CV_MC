@@ -66,11 +66,14 @@ enum Menu {
   GATE_TRIG,
   GATE_TRIG_SET_CH,
   PITCH_BEND_SET_CH,
-  CC_SET_CH
+  CC_SET_CH,
+  SCALE_FACTOR,
+  SCALE_FACTOR_SET_CH
 } menu;
 
 char notePriority[] = "TTT";
 char gateTrig[] = "GGG";
+float sfAdj[3];
 
 uint8_t pitchBendChan;
 uint8_t ccChan;
@@ -80,6 +83,7 @@ uint8_t ccChan;
 #define ADDR_GATE_TRIG     3
 #define ADDR_PITCH_BEND    6
 #define ADDR_CC            7
+#define ADDR_SF_ADJUST     8
 
 bool highlightEnabled = false;  // Flag indicating whether highighting should be enabled on menu
 #define HIGHLIGHT_TIMEOUT 20000  // Highlight disappears after 20 seconds.  Timer resets whenever encoder turned or button pushed
@@ -117,10 +121,12 @@ void setup()
  for (int i=0; i<3; i++) {
    notePriority[i] = (char)EEPROM.read(ADDR_NOTE_PRIORITY+i);
    gateTrig[i] = (char)EEPROM.read(ADDR_GATE_TRIG+i);
+   EEPROM.get(ADDR_SF_ADJUST+i*sizeof(float), sfAdj[i]);
 
   // Set defaults if EEPROM not initialized
   if (notePriority[i] != 'T' && notePriority[i] != 'B' && notePriority[i] != 'L') notePriority[i] = 'T';
   if (gateTrig[i] != 'G' && gateTrig[i] != 'T') gateTrig[i] = 'G';
+  if ((sfAdj[i] < 0.9f) || (sfAdj[i] > 1.1f) || isnan(sfAdj[i])) sfAdj[i] = 1.0f; 
  }
   
  pitchBendChan = EEPROM.read(ADDR_PITCH_BEND);
@@ -290,16 +296,13 @@ void commandLastNote(int channel)
 //    noteMsg = 87 -> 4096 mV
 // DAC output will be (4095/87) = 47.069 mV per note, and 564.9655 mV per octive
 // Note that DAC output will need to be amplified by 1.77X for the standard 1V/octive 
-#define NOTE_SF_CH0 47.069f // Can set three scale factors independently based on as-measured values
-#define NOTE_SF_CH1 47.069f
-#define NOTE_SF_CH2 47.069f
-#define NOTE_SF(CH) (CH==0 ? NOTE_SF_CH0 : (CH==1 ? NOTE_SF_CH1 : NOTE_SF_CH2))
+#define NOTE_SF 47.069f 
 
 void commandNote(int noteMsg, int channel) {
   digitalWrite(GATE(channel),HIGH);
   trigTimer[channel] = millis();
   
-  unsigned int mV = (unsigned int) ((float) noteMsg * NOTE_SF(channel) + 0.5);   
+  unsigned int mV = (unsigned int) ((float) noteMsg * NOTE_SF * sfAdj[channel] + 0.5);   
   setVoltage(NOTE_DAC(channel), NOTE_AB(channel), 1, mV);  
 }
 
@@ -363,7 +366,7 @@ void updateMenu() {  // Called whenever button is pushed
   if (highlightEnabled) { // Highlight is active, choose selection
     switch (menu) {
       case SETTINGS:
-        switch (mod(encoderPos,4)) {
+        switch (mod(encoderPos,5)) {
           case 0: 
             menu = NOTE_PRIORITY;
             break;
@@ -375,6 +378,9 @@ void updateMenu() {  // Called whenever button is pushed
             break;
           case 3: 
             menu = CC_SET_CH;
+            break;
+          case 4: 
+            menu = SCALE_FACTOR;
             break;
         }
         break;
@@ -426,6 +432,25 @@ void updateMenu() {  // Called whenever button is pushed
         menu = SETTINGS;
         EEPROM.write(ADDR_CC, ccChan);
         break;
+
+      case SCALE_FACTOR:
+        setCh = mod(encoderPos,4);
+        switch (setCh) {
+          case 0: 
+          case 1: 
+          case 2: 
+            menu = SCALE_FACTOR_SET_CH;
+            break;
+          case 3: 
+            menu = SETTINGS;
+            break;
+        }
+        break;
+        
+      case SCALE_FACTOR_SET_CH: // Save scale factor to EEPROM
+        menu = SCALE_FACTOR;
+        EEPROM.put(ADDR_SF_ADJUST+setCh*sizeof(float), sfAdj[setCh]);
+        break;      
     }
   }
   else { // Highlight wasn't visible, reinitialize highlight timer
@@ -452,28 +477,33 @@ void updateSelection() { // Called whenever encoder is turned
       display.print(F("SETTINGS"));
       display.setCursor(0,16);
       
-      if (menu == SETTINGS) setHighlight(0,4);
+      if (menu == SETTINGS) setHighlight(0,5);
       display.print(F("Note Priority "));
       display.println(notePriority);
       
-      if (menu == SETTINGS) setHighlight(1,4);
+      if (menu == SETTINGS) setHighlight(1,5);
       display.print(F("Gate/Trig     "));
       display.println(gateTrig);
       
-      if (menu == SETTINGS) setHighlight(2,4);
+      if (menu == SETTINGS) setHighlight(2,5);
       display.print(F("Pitch Bend    "));
       if (menu == PITCH_BEND_SET_CH) display.setTextColor(BLACK,WHITE);
       display.print(pitchBendChan+1);
       display.println(F("  "));
       
-      if (menu == SETTINGS) setHighlight(3,4);
+      if (menu == SETTINGS) setHighlight(3,5);
       else display.setTextColor(WHITE,BLACK);
       display.print(F("CC            "));
       if (menu == CC_SET_CH) display.setTextColor(BLACK,WHITE);
       display.print(ccChan+1);
       display.println(F("  "));
+
+      if (menu == SETTINGS) setHighlight(4,5);
+      else display.setTextColor(WHITE,BLACK);
+      display.println(F("Scale Factor     "));
       
       break;
+      
     case NOTE_PRIORITY_SET_CH:
       switch (mod(encoderPos, 3)) {
         case 0:
@@ -515,8 +545,9 @@ void updateSelection() { // Called whenever encoder is turned
       else display.setTextColor(WHITE,BLACK);
       display.println(F("Return           "));       
       break;  
+      
     case GATE_TRIG_SET_CH:
-          switch (mod(encoderPos, 2)) {
+      switch (mod(encoderPos, 2)) {
         case 0:
           gateTrig[setCh] = 'G';  // Gate
           break;
@@ -552,6 +583,40 @@ void updateSelection() { // Called whenever encoder is turned
       else display.setTextColor(WHITE,BLACK);
       display.print(F("Return      "));  
       break;
+      
+    case SCALE_FACTOR_SET_CH:
+        if ((encoderPos > encoderPosPrev) && (sfAdj[setCh] < 1.1))
+            sfAdj[setCh] += 0.001f;
+        else if ((encoderPos < encoderPosPrev) && (sfAdj[setCh] > 0.9))
+            sfAdj[setCh] -= 0.001f;           
+      // No break statement, continue through next case
+    case SCALE_FACTOR:
+      display.setCursor(0,0); 
+      display.setTextColor(WHITE,BLACK);
+      display.print(F("SET SCALE FACTOR"));   
+      display.setCursor(0,16);
+      
+      if (menu == SCALE_FACTOR) setHighlight(0,4);
+      display.print(F("Channel 1: "));
+      if ((menu == SCALE_FACTOR_SET_CH) && setCh == 0) display.setTextColor(BLACK,WHITE);
+      display.println(sfAdj[0],3);
+      
+      if (menu == SCALE_FACTOR) setHighlight(1,4);
+      else display.setTextColor(WHITE,BLACK);
+      display.print(F("Channel 2: "));
+      if ((menu == SCALE_FACTOR_SET_CH) && setCh == 1) display.setTextColor(BLACK,WHITE);
+      display.println(sfAdj[1],3);
+            
+      if (menu == SCALE_FACTOR) setHighlight(2,4);
+      else display.setTextColor(WHITE,BLACK);
+      display.print(F("Channel 3: "));  
+      if ((menu == SCALE_FACTOR_SET_CH) && setCh == 2) display.setTextColor(BLACK,WHITE);
+      display.println(sfAdj[2],3);
+            
+      if (menu == SCALE_FACTOR) setHighlight(3,4);
+      else display.setTextColor(WHITE,BLACK);
+      display.print(F("Return      "));  
+       
   }
   display.display(); 
 }

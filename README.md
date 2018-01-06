@@ -7,6 +7,7 @@
 This repository contains the code and schematics for a three-channel USB-MIDI to CV converter.  STL files are also included for a 3D printed case.  This project has the following features:
 * Three channel Note CV output (88 keys, 1V/octave, MIDI channels 1-3) using a 12-bit DAC
 * Configurable note priority for each channel (Top Note, Bottom Note, or Last Note Priority)
+* Note scale factor calibration configurable in software
 * 5V Gate/Trigger outputs, where each channel can be independently configured to either output a gate (output high for entire length of time that note is on) or trigger (20 msec pulse each time a new note is initiated)
 * Velocity CV output (0 to 4V) for each channel
 * Pitch Bend CV output (0.5 +/- 0.5V), which can be configured for channel 1, 2, or 3
@@ -22,9 +23,9 @@ Note priority can be independengly set for each channel, with the following opti
 * **Bottom Note (aka Lowest Note):** Analagous to top note, except the lowest note being held will be sounded.  
 * **Last Note:** The most recent note played will be sounded.  When that note is released, the next most recent note still being held will be sounded.  
 
-The settings screen shows the current settings used.  Note priority is listed as sequence of three letters showing the setting for each of the three channels, where T = Top Note, B = Bottom Note, and L = Last Note.  Similarly, Gate/Trigger is listed as a sequence of three letters where G = Gate and T = Trigger.  Pitch Bend and CC settings show which MIDI channel will be used for the analog output.  All of these settings can be set through the OLED interface using the encoder knob.
+The settings screen shows the current settings used.  Note priority is listed as sequence of three letters showing the setting for each of the three channels, where T = Top Note, B = Bottom Note, and L = Last Note.  Similarly, Gate/Trigger is listed as a sequence of three letters where G = Gate and T = Trigger.  Pitch Bend and CC settings show which MIDI channel will be used for the analog output.  Note scale factor can also be calibrated by +/-10%.  All of these settings can be set through the OLED interface using the encoder knob.
 
-<img src="/images/IMG_1627.JPG" alt="MIDI2CV" width="420" height="315"> <img src="/images/IMG_1628.JPG" alt="MIDI2CV" width="420" height="315">
+<img src="/images/IMG_1644.JPG" alt="MIDI2CV" width="420" height="315"> <img src="/images/IMG_1645.JPG" alt="MIDI2CV" width="420" height="315">
 
 ## Parts List
 * Teensy 2.0
@@ -76,4 +77,4 @@ The firmware can be uploaded to the Teensy 2.0 using the Teensy loader.  See htt
 
 If using 1% metal film resistors, the MIDI2CV is likely to be in tune for the entire 7.25 octave (88 key) range.  The DAC output range is 4.096 V, which is amplified by 7.25/4.096 = 1.7700.  This is accomplished with the combination of 3K, 4.7K, and 10K resistors in the op-amp circuit.  (Note 3.01K is also common, and can be used.)  
 
- Inside the firmware, a scale factor (4095 counts / 87 semitones) = 47.069 counts (mV) is is used to scale the MIDI note number to an equivalent number of counts for the DAC.  This is defined at the #define NOTE_SF_CHx statements, where x = 0 to 2.  If the MIDI2CV output scale factor isn't exactly 1V/octave, this number can be modified (per channel) to calibrate the output.  Mine was fairly close for all three channels, and required no adjustment. 
+If the MIDI2CV output scale factor isn't exactly 1V/octave, the scale factor can be adjusted by +/-10% using the user interface.  Mine was fairly close for all three channels, and required adjustment of only a few tenths of a percent. 
