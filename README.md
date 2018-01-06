@@ -25,7 +25,7 @@ Note priority can be independengly set for each channel, with the following opti
 
 The settings screen shows the current settings used.  Note priority is listed as sequence of three letters showing the setting for each of the three channels, where T = Top Note, B = Bottom Note, and L = Last Note.  Similarly, Gate/Trigger is listed as a sequence of three letters where G = Gate and T = Trigger.  Pitch Bend and CC settings show which MIDI channel will be used for the analog output.  Note scale factor can also be calibrated by +/-10%.  All of these settings can be set through the OLED interface using the encoder knob.
 
-<img src="/images/IMG_1645.JPG" alt="MIDI2CV" width="420" height="315"> <img src="/images/IMG_1644.JPG" alt="MIDI2CV" width="420" height="315">
+<img src="/images/IMG_1642.JPG" alt="MIDI2CV" width="420" height="315"> <img src="/images/IMG_1644.JPG" alt="MIDI2CV" width="420" height="315">
 
 ## Parts List
 * Teensy 2.0
