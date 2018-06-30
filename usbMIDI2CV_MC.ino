@@ -179,18 +179,18 @@ void loop()
   }
   
   if (usbMIDI.read()) {                    
-    int8_t type = usbMIDI.getType();
+    byte type = usbMIDI.getType();
     switch (type) {
         
-      case 0: // Note Off
-      case 1: // Note On 
+      case usbMIDI.NoteOff:
+      case usbMIDI.NoteOn:
         noteMsg = usbMIDI.getData1() - 21; // A0 = 21, Top Note = 108
         channel = usbMIDI.getChannel()-1;
 
         if (channel > 2) return;  // Only channel 0,1,2 supported
         if ((noteMsg < 0) || (noteMsg > 87)) break;  // Only 88 notes of keyboard are supported
 
-        if (type == 1) velocity = usbMIDI.getData2();
+        if (type == usbMIDI.NoteOn) velocity = usbMIDI.getData2();
         else velocity  = 0;  
 
         if (velocity == 0)  {
@@ -215,7 +215,7 @@ void loop()
             
         break;
         
-      case 6: // Pitch Bend
+      case usbMIDI.PitchBend:
         if (usbMIDI.getChannel() == pitchBendChan) {
           // Pitch bend output from 0 to 1023 mV.  Left shift d2 by 4 to scale from 0 to 2047.
           // With DAC gain = 1X, this will yield a range from 0 to 1023 mV.  Additional amplification
@@ -225,7 +225,7 @@ void loop()
         }
         break;
 
-      case 3: // Control Change);
+      case usbMIDI.ControlChange: 
         if (usbMIDI.getChannel() == ccChan) {
           d2 = usbMIDI.getData2(); 
           // CC range from 0 to 4095 mV  Left shift d2 by 5 to scale from 0 to 4095, 
@@ -294,8 +294,8 @@ void commandLastNote(int channel)
 // Rescale 88 notes to 4096 mV:
 //    noteMsg = 0 -> 0 mV 
 //    noteMsg = 87 -> 4096 mV
-// DAC output will be (4095/87) = 47.069 mV per note, and 564.9655 mV per octive
-// Note that DAC output will need to be amplified by 1.77X for the standard 1V/octive 
+// DAC output will be (4095/87) = 47.069 mV per note, and 564.9655 mV per octave
+// Note that DAC output will need to be amplified by 1.77X for the standard 1V/octave 
 #define NOTE_SF 47.069f 
 
 void commandNote(int noteMsg, int channel) {
