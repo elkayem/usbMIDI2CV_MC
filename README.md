@@ -29,6 +29,7 @@ The settings screen shows the current settings used.  Note priority is listed as
 
 ## Parts List
 * Teensy 2.0
+* LM7805 5V Voltage Regulator
 * 128x64 OLED graphic display, with I2C interface 
 * Pushbutton Rotary encoder with knob (should have 5 pins)
 * 4x MCP4822 12-bit DACs (8 pin DIP)
