@@ -54,7 +54,9 @@
 #define CC_AB     1
 
 #define OLED_RESET 17
-Adafruit_SSD1306 display(OLED_RESET);
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 int encoderPos, encoderPosPrev;
 Bounce encButton = Bounce(); 
@@ -635,6 +637,3 @@ int mod(int a, int b)
     int r = a % b;
     return r < 0 ? r + b : r;
 }
-
-
-
